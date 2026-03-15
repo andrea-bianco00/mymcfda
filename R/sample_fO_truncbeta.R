@@ -30,7 +30,7 @@
 #'
 #' @param n     Integer >= 1. Number of samples to draw.
 #' @param delta Numeric in (0, 1). Snippet length. Determines the support
-#'              [delta/2, 1 - delta/2].
+#'              (delta/2, 1 - delta/2).
 #' @param a_O   Numeric > 0. First shape parameter of Beta(a_O, b_O).
 #'              Must be > 1 for strict positivity at the left boundary.
 #'              Default: 2.
@@ -39,7 +39,7 @@
 #'              Default: 2.
 #'
 #' @return Numeric vector of length n with samples O_1, ..., O_n,
-#'         all in [delta/2, 1 - delta/2].
+#'         all in (delta/2, 1 - delta/2).
 #'
 #' @examples
 #' # Default: symmetric Beta(2,2)
@@ -52,6 +52,7 @@
 #' # Right-skewed Beta(2,3): more subjects enter late
 #' O3 <- sample_fO_truncbeta(n = 500, delta = 0.4, a_O = 2, b_O = 3)
 
+#' @export
 sample_fO_truncbeta <- function(n, delta, a_O = 2, b_O = 2) {
   
   # ---------------------------------------------------------------------------

@@ -30,7 +30,7 @@
 
 #' Generate centred process via variance-correlation decomposition
 #'
-#' @param T_list       List of n numeric vectors. T_list[[i]] contains the m_i
+#' @param T_list       List of n numeric vectors. T_list((i)) contains the m_i
 #'                     measurement times for subject i.
 #' @param sigmaX_fn    Function. Standard deviation function sigma_X(t).
 #'                     Must be vectorised and non-negative.
@@ -46,7 +46,7 @@
 #'                     Sigma_i for numerical stability. Default: 1e-10.
 #'
 #' @return A list with:
-#'   - Z_list     : list of n numeric vectors. Z_list[[i]] contains
+#'   - Z_list     : list of n numeric vectors. Z_list((i)) contains
 #'                  Z_i(T_i1), ..., Z_i(T_im_i).
 #'   - Sigma_list : optional list of subject-specific covariance matrices.
 #'   - config     : list of arguments used for generation.
@@ -69,6 +69,7 @@
 #' str(out$Z_list)
 #' str(out$Sigma_list)
 
+#' @export
 generate_decomposition_process <- function(T_list,
                                            sigmaX_fn,
                                            corr_type,

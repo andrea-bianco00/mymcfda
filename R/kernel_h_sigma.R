@@ -34,6 +34,7 @@
 #' plot(u, kernel_h_sigma(u, h_sigma = 0.3, kernel = "epanechnikov"), type = "l")
 #' lines(u, kernel_h_sigma(u, h_sigma = 0.3, kernel = "biweight"), col = "red")
 
+#' @export
 kernel_h_sigma <- function(u, h_sigma, kernel) {
   
   # --- input checks -----------------------------------------------------------

@@ -62,13 +62,13 @@
 #'                  Default: list() (uses each family's defaults).
 #'
 #' @return A list with components:
-#'   - T_list    : list of n numeric vectors. T_list[[i]] contains the m_i
+#'   - T_list    : list of n numeric vectors. T_list((i)) contains the m_i
 #'                 measurement times for subject i, sorted in increasing
-#'                 order, all in [0, 1].
+#'                 order, all in (0, 1).
 #'   - m_vec     : integer vector of length n. Number of measurements per
 #'                 subject (m_1, ..., m_n), all >= 2.
 #'   - O_vec     : numeric vector of length n. Reference times O_1, ..., O_n
-#'                 in [delta/2, 1 - delta/2]. LATENT in real data.
+#'                 in (delta/2, 1 - delta/2). LATENT in real data.
 #'   - windows   : data frame with columns A (left endpoint) and B (right
 #'                 endpoint) of each subject's observation window. LATENT.
 #'   - config    : list containing all input parameters (n, m_mean, delta,
@@ -111,6 +111,7 @@
 #'   f0_params = list(lambda = 3)
 #' )
 
+#' @export
 generate_snippet_data <- function(n,
                                   m_mean    = 4,
                                   delta     = 0.25,
@@ -119,7 +120,7 @@ generate_snippet_data <- function(n,
                                   fO_params = list(),
                                   f0_type   = "uniform",
                                   f0_params = list()) {
-  
+
   # ---------------------------------------------------------------------------
   # INPUT VALIDATION
   # ---------------------------------------------------------------------------
@@ -131,7 +132,7 @@ generate_snippet_data <- function(n,
     stop("delta must be a number in (0, 1).")
   if (!is.null(seed) && (!is.numeric(seed) || length(seed) != 1))
     stop("seed must be a single integer or NULL.")
-  
+
   valid_types <- c("uniform", "truncnorm", "truncbeta", "truncexp")
   if (!fO_type %in% valid_types)
     stop("fO_type must be one of: ", paste(valid_types, collapse = ", "))
@@ -141,17 +142,17 @@ generate_snippet_data <- function(n,
     stop("fO_params must be a named list.")
   if (!is.list(f0_params))
     stop("f0_params must be a named list.")
-  
+
   # ---------------------------------------------------------------------------
   # SET SEED (if provided)
   # ---------------------------------------------------------------------------
   if (!is.null(seed)) set.seed(seed)
-  
+
   # ---------------------------------------------------------------------------
   # STEP 1: Draw m_1, ..., m_n ~ Poisson(m_mean) truncated at >= 2
   # ---------------------------------------------------------------------------
   m_vec <- draw_m_vec(n = n, m_mean = m_mean)
-  
+
   # ---------------------------------------------------------------------------
   # STEP 2: Draw O_1, ..., O_n i.i.d. from f_O
   # ---------------------------------------------------------------------------
@@ -159,7 +160,7 @@ generate_snippet_data <- function(n,
                               delta  = delta,
                               type   = fO_type,
                               params = fO_params)
-  
+
   # ---------------------------------------------------------------------------
   # STEP 3: Draw T_i1, ..., T_im_i for each subject from f_0
   # ---------------------------------------------------------------------------
@@ -168,15 +169,15 @@ generate_snippet_data <- function(n,
                                    delta  = delta,
                                    type   = f0_type,
                                    params = f0_params)
-  
+
   # sort each subject's times in increasing order
   T_list <- lapply(T_list, sort)
-  
+
   # ---------------------------------------------------------------------------
   # SUMMARY DIAGNOSTICS
   # ---------------------------------------------------------------------------
   snippet_widths <- sapply(T_list, function(t_i) max(t_i) - min(t_i))
-  
+
   summary_info <- list(
     n              = n,
     m_mean_actual  = mean(m_vec),
@@ -186,7 +187,7 @@ generate_snippet_data <- function(n,
                        mean = mean(snippet_widths),
                        max  = max(snippet_widths))
   )
-  
+
   # ---------------------------------------------------------------------------
   # STORE CONFIG for full reproducibility
   # ---------------------------------------------------------------------------
@@ -200,7 +201,7 @@ generate_snippet_data <- function(n,
     f0_type   = f0_type,
     f0_params = f0_params
   )
-  
+
   # ---------------------------------------------------------------------------
   # RETURN
   # ---------------------------------------------------------------------------

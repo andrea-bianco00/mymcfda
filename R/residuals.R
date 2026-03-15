@@ -33,18 +33,19 @@
 
 #' Compute squared residuals Z_ij = {Y_ij - mu_hat(T_ij)}^2
 #'
-#' @param T_list  List of length n. T_list[[i]] is the vector of observation
+#' @param T_list  List of length n. T_list((i)) is the vector of observation
 #'                times for subject i.
-#' @param Y_list  List of length n. Y_list[[i]] is the vector of observed
+#' @param Y_list  List of length n. Y_list((i)) is the vector of observed
 #'                values Y_ij for subject i.
 #' @param h_mu    Numeric scalar. Bandwidth used to estimate mu_hat.
 #' @param kernel  Character string. Kernel type, passed to compute_mu_hat_t().
 #' @param scheme  Character string. Weighting scheme passed to compute_mu_hat_t().
 #'                One of "OBS", "SUBJ", "OPTIMAL".
 #'
-#' @return A list of length n. Z_list[[i]] is the vector of squared residuals
+#' @return A list of length n. Z_list((i)) is the vector of squared residuals
 #'         Z_ij = {Y_ij - mu_hat(T_ij)}^2 for subject i.
 
+#' @export
 compute_residuals <- function(T_list, Y_list, h_mu, kernel, scheme) {
   
   # --- input checks -----------------------------------------------------------

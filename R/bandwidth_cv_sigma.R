@@ -30,7 +30,7 @@
 #' Select bandwidth h_sigma via kappa-fold cross-validation
 #'
 #' @param T_list  List of length n.
-#' @param Z_list  List of length n. Z_list[[i]] = {Y_ij - mu_hat(T_ij)}^2.
+#' @param Z_list  List of length n. Z_list((i)) = {Y_ij - mu_hat(T_ij)}^2.
 #' @param kappa   Integer >= 2. Number of folds. Default 5.
 #' @param n_h     Integer >= 2. Number of bandwidth candidates. Default 40.
 #' @param h_min   Numeric > 0. Lower bound of grid. If NULL, set automatically.
@@ -41,6 +41,7 @@
 #'
 #' @return A list: $h_opt, $h_grid, $cv_vals.
 
+#' @export
 bandwidth_cv_sigma <- function(T_list, Z_list, kappa = 5, n_h = 40,
                                h_min = NULL, h_max = NULL,
                                kernel, scheme, seed) {

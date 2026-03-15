@@ -22,9 +22,9 @@
 
 #' Compute A_hat_0
 #'
-#' @param T_list  List of length n. T_list[[i]] is the vector of observation
+#' @param T_list  List of length n. T_list((i)) is the vector of observation
 #'                times for subject i.
-#' @param Y_list  List of length n. Y_list[[i]] is the vector of observed
+#' @param Y_list  List of length n. Y_list((i)) is the vector of observed
 #'                values Y_ij for subject i.
 #' @param h0      Numeric scalar. Bandwidth h0 > 0, computed via compute_h0().
 #'
@@ -35,6 +35,7 @@
 #' Y_list <- list(c(1.2, 0.8, 1.1), c(0.9, 1.3, 1.0, 1.2), c(1.1, 0.7))
 #' compute_A0(T_list, Y_list, h0 = 0.1)
 
+#' @export
 compute_A0 <- function(T_list, Y_list, h0) {
   
   # --- input checks -----------------------------------------------------------

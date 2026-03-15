@@ -58,6 +58,7 @@
 #' @return Numeric matrix of dimension length(s) x length(t) with
 #'         C(s_i, t_j) values.
 
+#' @export
 compute_cov_from_KL <- function(s, t, eigenfn_list, eigenval_vec) {
   
   # ---------------------------------------------------------------------------

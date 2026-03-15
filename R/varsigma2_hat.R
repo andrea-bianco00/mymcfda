@@ -28,9 +28,9 @@
 
 #' Ridged local linear estimator of varsigma^2(t) on a grid of points
 #'
-#' @param T_list                List of length n. T_list[[i]] is the vector of
+#' @param T_list                List of length n. T_list((i)) is the vector of
 #'                              observation times for subject i.
-#' @param Z_list                List of length n. Z_list[[i]] is the vector of
+#' @param Z_list                List of length n. Z_list((i)) is the vector of
 #'                              squared residuals Z_ij = {Y_ij - mu_hat(T_ij)}^2
 #'                              for subject i.
 #' @param h_sigma               Numeric scalar. Bandwidth h_sigma > 0.
@@ -41,7 +41,7 @@
 #' @param t_grid                Numeric vector. Grid of points at which
 #'                              varsigma^2(t) is estimated. If NULL (default),
 #'                              built automatically as n_t equally spaced points
-#'                              over [min(T_ij), max(T_ij)].
+#'                              over (min(T_ij), max(T_ij)).
 #' @param n_t                   Positive integer. Number of grid points when
 #'                              t_grid is built automatically. Default is 100.
 #' @param truncate_nonnegative  Logical. If TRUE (default), truncate negative
@@ -51,6 +51,7 @@
 #'   $t_grid:        Numeric vector. The grid of evaluation points.
 #'   $varsigma2_hat: Numeric vector. Estimated varsigma2_hat(t) for each t in t_grid.
 
+#' @export
 compute_varsigma2_hat <- function(T_list, Z_list, h_sigma, kernel, scheme,
                                   t_grid = NULL, n_t = 100,
                                   truncate_nonnegative = TRUE) {

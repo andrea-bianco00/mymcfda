@@ -51,13 +51,13 @@
 #' Truncated Normal density for measurement times f_0
 #'
 #' @param s     Numeric vector. Points at which to evaluate f_0.
-#'              Values outside [0, delta] return 0.
+#'              Values outside (0, delta) return 0.
 #' @param delta Numeric in (0, 1). Snippet length. Determines the support
-#'              [0, delta].
-#' @param mu_0  Numeric. Centre of the normal distribution on [0, delta].
+#'              (0, delta).
+#' @param mu_0  Numeric. Centre of the normal distribution on (0, delta).
 #'              Default: delta/2 (midpoint of the window).
 #' @param sd_0  Numeric > 0. Scale of the normal distribution.
-#'              Default: delta/4, placing ~95% of the mass inside [0, delta].
+#'              Default: delta/4, placing ~95% of the mass inside (0, delta).
 #'
 #' @return Numeric vector of the same length as s with values of f_0(s).
 #'
@@ -76,6 +76,7 @@
 #' s_fine <- seq(0, 0.4, length.out = 10000)
 #' sum(fzero_truncnorm(s_fine, delta = 0.4)) * (0.4 / 10000)  # approximately 1
 
+#' @export
 fzero_truncnorm <- function(s, delta, mu_0 = NULL, sd_0 = NULL) {
   
   # ---------------------------------------------------------------------------

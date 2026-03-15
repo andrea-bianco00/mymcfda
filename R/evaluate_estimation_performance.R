@@ -61,6 +61,7 @@
 #' #   C_true_fun              = C_true_fun
 #' # )
 
+#' @export
 evaluate_estimation_performance <- function(
     sigma0_estimates = NULL,
     sigma2_0_true = NULL,

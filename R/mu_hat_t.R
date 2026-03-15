@@ -38,9 +38,9 @@
 #'
 #' @param t_vec   Numeric vector. Points at which mu(t) is estimated.
 #'                Can be a scalar for single-point evaluation (backward compatible).
-#' @param T_list  List of length n. T_list[[i]] is the vector of observation
+#' @param T_list  List of length n. T_list((i)) is the vector of observation
 #'                times for subject i.
-#' @param Y_list  List of length n. Y_list[[i]] is the vector of observed
+#' @param Y_list  List of length n. Y_list((i)) is the vector of observed
 #'                values Y_ij for subject i.
 #' @param h_mu    Numeric scalar. Bandwidth h_mu > 0.
 #' @param kernel  Character string. Kernel type, passed to kernel_h_mu().
@@ -49,6 +49,7 @@
 #'
 #' @return Numeric vector of length(t_vec). Returns a scalar if t_vec is scalar.
 
+#' @export
 compute_mu_hat_t <- function(t_vec, T_list, Y_list, h_mu, kernel, scheme) {
   
   # --- input checks -----------------------------------------------------------

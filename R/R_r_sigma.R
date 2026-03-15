@@ -26,9 +26,9 @@
 #'
 #' @param t_vec    Numeric vector. Points at which R_r is evaluated.
 #'                 Can be a scalar for single-point evaluation (backward compatible).
-#' @param T_list   List of length n. T_list[[i]] is the vector of observation
+#' @param T_list   List of length n. T_list((i)) is the vector of observation
 #'                 times for subject i.
-#' @param Z_list   List of length n. Z_list[[i]] is the vector of squared
+#' @param Z_list   List of length n. Z_list((i)) is the vector of squared
 #'                 residuals Z_ij = {Y_ij - mu_hat(T_ij)}^2 for subject i.
 #' @param h_sigma  Numeric scalar. Bandwidth h_sigma > 0.
 #' @param r        Integer. Order of R_r. Must be 0, 1, or 2.
@@ -38,6 +38,7 @@
 #'
 #' @return Numeric vector of length(t_vec). Returns a scalar if t_vec is scalar.
 
+#' @export
 compute_Rr_sigma <- function(t_vec, T_list, Z_list, h_sigma, r, kernel, scheme) {
   
   # --- input checks -----------------------------------------------------------

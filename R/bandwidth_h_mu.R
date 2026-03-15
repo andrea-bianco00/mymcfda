@@ -46,6 +46,7 @@
 #'
 #' @return A list: $h_opt, $h_grid, $cv_vals.
 
+#' @export
 bandwidth_cv_mu <- function(T_list, Y_list, kappa = 5, n_h = 40,
                             h_min = NULL, h_max = NULL,
                             kernel, scheme, seed) {

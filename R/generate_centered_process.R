@@ -29,7 +29,7 @@
 
 #' Generate centred process through KL or decomposition road
 #'
-#' @param T_list        List of n numeric vectors. T_list[[i]] contains the m_i
+#' @param T_list        List of n numeric vectors. T_list((i)) contains the m_i
 #'                      measurement times for subject i.
 #' @param road          Character. Must be either "kl" or "decomposition".
 #'
@@ -105,6 +105,7 @@
 #'   seed = 123
 #' )
 
+#' @export
 generate_centered_process <- function(T_list,
                                       road,
                                       eigenfn_list = NULL,

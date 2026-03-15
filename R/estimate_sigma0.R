@@ -52,6 +52,7 @@
 #'   $Delta        Numeric. Ridge term in sigma0 estimation.
 #'   $error        Character or NULL. Error message if pipeline failed.
 
+#' @export
 estimate_sigma0 <- function(T_list, Y_list,
                             kappa   = 5,
                             n_h     = 20,

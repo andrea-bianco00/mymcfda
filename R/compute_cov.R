@@ -97,6 +97,7 @@
 #'   eigenval_vec = my_eigenval_vec
 #' )
 
+#' @export
 compute_cov <- function(s,
                         t,
                         road,

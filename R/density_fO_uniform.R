@@ -26,9 +26,9 @@
 #' Uniform density for reference times f_O
 #'
 #' @param u     Numeric vector. Points at which to evaluate f_O.
-#'              Values outside [delta/2, 1 - delta/2] return 0.
+#'              Values outside (delta/2, 1 - delta/2) return 0.
 #' @param delta Numeric in (0, 1). Snippet length. Determines the support
-#'              [delta/2, 1 - delta/2] and the constant density value
+#'              (delta/2, 1 - delta/2) and the constant density value
 #'              1 / (1 - delta).
 #'
 #' @return Numeric vector of the same length as u with values of f_O(u).
@@ -37,11 +37,12 @@
 #' u <- seq(0, 1, length.out = 500)
 #' f <- fO_uniform(u, delta = 0.4)
 #' plot(u, f, type = "l", main = "f_O uniform, delta = 0.4")
-#' # f_O = 1/(1-0.4) = 1.667 on [0.2, 0.8], zero elsewhere
+#' # f_O = 1/(1-0.4) = 1.667 on (0.2, 0.8), zero elsewhere
 #'
 #' # Verify it integrates to 1
 #' sum(f) * (1 / 500)   # approximately 1
 
+#' @export
 fO_uniform <- function(u, delta) {
   
   # ---------------------------------------------------------------------------

@@ -47,6 +47,7 @@
 #' compute_weights(m_vec, scheme = "SUBJ")
 #' compute_weights(m_vec, scheme = "OPTIMAL", h = 0.3)
 
+#' @export
 compute_weights <- function(m_vec, scheme, h = NULL) {
   
   # --- input checks -----------------------------------------------------------

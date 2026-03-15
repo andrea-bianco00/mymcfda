@@ -53,6 +53,7 @@
 #'   - counts           Function/gradient evaluation counts, if available
 #'   - optim_result     Full optim() output if return_optim = TRUE, else NULL
 
+#' @export
 estimate_theta <- function(raw_cov_df,
                            sigmaX_obs_list,
                            model,

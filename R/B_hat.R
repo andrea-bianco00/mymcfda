@@ -25,16 +25,17 @@
 
 #' Compute B_hat
 #'
-#' @param T_list  List of length n. T_list[[i]] is the vector of observation
+#' @param T_list  List of length n. T_list((i)) is the vector of observation
 #'                times for subject i.
 #' @param h0      Numeric scalar. Bandwidth h0 > 0, computed via compute_h0().
 #'
-#' @return Numeric scalar. The value of B_hat, always in [0, 1].
+#' @return Numeric scalar. The value of B_hat, always in (0, 1).
 #'
 #' @examples
 #' T_list <- list(c(0.1, 0.3, 0.4), c(0.5, 0.6, 0.7, 0.8), c(0.2, 0.4))
 #' compute_B(T_list, h0 = 0.15)
 
+#' @export
 compute_B <- function(T_list, h0) {
   
   # --- input checks -----------------------------------------------------------

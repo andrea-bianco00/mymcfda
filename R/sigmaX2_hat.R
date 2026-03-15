@@ -38,6 +38,7 @@
 #' # sigma0_res   <- compute_sigma0(...)
 #' # res_sigmaX2  <- compute_sigmaX2_hat(res_varsigma, sigma0_res$sigma0_hat)
 
+#' @export
 compute_sigmaX2_hat <- function(res_varsigma,
                                 sigma0_hat,
                                 truncate_nonnegative = TRUE,

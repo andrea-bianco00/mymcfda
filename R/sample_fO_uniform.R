@@ -30,16 +30,17 @@
 #'
 #' @param n     Integer >= 1. Number of samples to draw.
 #' @param delta Numeric in (0, 1). Snippet length. Determines the support
-#'              [delta/2, 1 - delta/2].
+#'              (delta/2, 1 - delta/2).
 #'
 #' @return Numeric vector of length n with samples O_1, ..., O_n,
-#'         all in [delta/2, 1 - delta/2].
+#'         all in (delta/2, 1 - delta/2).
 #'
 #' @examples
 #' O <- sample_fO_uniform(n = 200, delta = 0.4)
 #' hist(O, breaks = 20, main = "f_O uniform, delta = 0.4")
-#' range(O)   # should be inside [0.2, 0.8]
+#' range(O)   # should be inside (0.2, 0.8)
 
+#' @export
 sample_fO_uniform <- function(n, delta) {
   
   # ---------------------------------------------------------------------------

@@ -20,16 +20,16 @@
 
 #' Evaluate mu_hat at the observed times of each subject
 #'
-#' @param T_list  List of length n. T_list[[i]] contains the observation times
+#' @param T_list  List of length n. T_list((i)) contains the observation times
 #'                for subject i.
-#' @param Y_list  List of length n. Y_list[[i]] contains the observed values
+#' @param Y_list  List of length n. Y_list((i)) contains the observed values
 #'                for subject i.
 #' @param h_mu    Numeric scalar. Bandwidth used for mean estimation.
 #' @param kernel  Character string. Kernel type passed to compute_mu_hat_t().
 #' @param scheme  Character string. Weighting scheme passed to compute_mu_hat_t().
 #'
 #' @return A list of length n. For each subject i:
-#'   - mu_obs_list[[i]] is a numeric vector of length m_i
+#'   - mu_obs_list((i)) is a numeric vector of length m_i
 #'     containing mu_hat(T_ij) for j = 1, ..., m_i.
 #'
 #' @examples
@@ -41,6 +41,7 @@
 #' #   scheme = "OBS"
 #' # )
 
+#' @export
 compute_mu_on_observed_times <- function(T_list, Y_list, h_mu, kernel, scheme) {
   
   # ---------------------------------------------------------------------------

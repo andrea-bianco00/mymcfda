@@ -41,12 +41,12 @@
 # =============================================================================
 
 
-#' Draw m i.i.d. samples from the Truncated Exponential density of f_0 on [0, delta]
+#' Draw m i.i.d. samples from the Truncated Exponential density of f_0 on (0, delta)
 #'
 #' @param m      Integer >= 1. Number of samples to draw (measurements per
 #'               subject).
 #' @param delta  Numeric in (0, 1). Snippet length. Determines the support
-#'               [0, delta].
+#'               (0, delta).
 #' @param lambda Numeric > 0. Decay rate parameter.
 #'                 small lambda  -> nearly uniform (slow decay)
 #'                 large lambda  -> concentrated near s = 0 (fast decay)
@@ -54,17 +54,17 @@
 #'               length.
 #'
 #' @return Numeric vector of length m with samples S_1, ..., S_m,
-#'         all in [0, delta]. These are RELATIVE positions within the
+#'         all in (0, delta). These are RELATIVE positions within the
 #'         window — add O_i - delta/2 to obtain the actual T_ij.
 #'
 #' @examples
 #' # Default lambda = 1/delta = 2.5
 #' S <- sample_fzero_truncexp(m = 5, delta = 0.4)
-#' range(S)   # inside [0, 0.4]
+#' range(S)   # inside (0, 0.4)
 #'
 #' # Actual measurement times for subject i with O_i = 0.6
 #' O_i <- 0.6; delta <- 0.4
-#' T_ij <- S + O_i - delta / 2   # shift to [O_i - 0.2, O_i + 0.2] = [0.4, 0.8]
+#' T_ij <- S + O_i - delta / 2   # shift to (O_i - 0.2, O_i + 0.2) = (0.4, 0.8)
 #'
 #' # Fast decay: concentrated near s = 0
 #' S2 <- sample_fzero_truncexp(m = 1000, delta = 0.4, lambda = 10)
@@ -73,6 +73,7 @@
 #' # Slow decay: nearly uniform
 #' S3 <- sample_fzero_truncexp(m = 1000, delta = 0.4, lambda = 0.01)
 
+#' @export
 sample_fzero_truncexp <- function(m, delta, lambda = NULL) {
   
   # ---------------------------------------------------------------------------

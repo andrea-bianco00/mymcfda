@@ -39,6 +39,7 @@
 #' lines(u, kernel_fun(u, "biweight"),   col = "red")
 #' lines(u, kernel_fun(u, "gaussian"),   col = "blue")
 
+#' @export
 kernel_fun <- function(u, kernel = "epanechnikov") {
   
   # --- input checks -----------------------------------------------------------

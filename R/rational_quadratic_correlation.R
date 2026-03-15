@@ -38,6 +38,7 @@
 #' t <- seq(0, 1, length.out = 5)
 #' rho <- rational_quadratic_correlation(s, t, theta1 = 1, theta2 = 0.5)
 
+#' @export
 rational_quadratic_correlation <- function(s, t, theta1, theta2) {
   
   # --- input checks -----------------------------------------------------------

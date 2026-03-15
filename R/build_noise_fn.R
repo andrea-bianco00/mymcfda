@@ -73,6 +73,7 @@
 #' @return A function noise_fn(m) -> numeric vector of length m,
 #'         mean 0, variance 1.
 
+#' @export
 build_noise_fn <- function(type = "gaussian", params = list()) {
   
   # ---------------------------------------------------------------------------

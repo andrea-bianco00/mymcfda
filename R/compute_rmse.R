@@ -23,6 +23,7 @@
 #' estimates <- c(0.11, 0.09, 0.13, 0.08, 0.12)
 #' compute_rmse(estimates, sigma2_0_true = 0.10)
 
+#' @export
 compute_rmse <- function(estimates, sigma2_0_true, na_rm = FALSE) {
   
   # ---------------------------------------------------------------------------

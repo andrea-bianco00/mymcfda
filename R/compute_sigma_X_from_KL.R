@@ -53,6 +53,7 @@
 #'
 #' @return Numeric vector of same length as t with sigma_X^2(t) values.
 
+#' @export
 compute_sigma_X_from_KL <- function(t, eigenfn_list, eigenval_vec) {
   
   # ---------------------------------------------------------------------------

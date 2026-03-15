@@ -97,6 +97,7 @@
 #' #   verbose = TRUE
 #' # )
 
+#' @export
 run_full_estimation_pipeline <- function(
     T_list,
     Y_list,

@@ -31,6 +31,7 @@
 #' plot(u, kernel_h_mu(u, h_mu = 0.3, kernel = "epanechnikov"), type = "l")
 #' lines(u, kernel_h_mu(u, h_mu = 0.3, kernel = "biweight"), col = "red")
 
+#' @export
 kernel_h_mu <- function(u, h_mu, kernel) {
   
   # --- input checks -----------------------------------------------------------

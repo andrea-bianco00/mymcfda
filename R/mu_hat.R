@@ -23,16 +23,16 @@
 
 #' Ridged local linear estimator of mu(t) on a grid of points
 #'
-#' @param T_list  List of length n. T_list[[i]] is the vector of observation
+#' @param T_list  List of length n. T_list((i)) is the vector of observation
 #'                times for subject i.
-#' @param Y_list  List of length n. Y_list[[i]] is the vector of observed
+#' @param Y_list  List of length n. Y_list((i)) is the vector of observed
 #'                values Y_ij for subject i.
 #' @param h_mu    Numeric scalar. Bandwidth h_mu > 0.
 #' @param kernel  Character string. Kernel type, passed to compute_mu_hat_t().
 #' @param scheme  Character string. Weighting scheme. One of "OBS", "SUBJ", "OPTIMAL".
 #' @param t_grid  Numeric vector. Grid of points at which mu(t) is estimated.
 #'                If NULL (default), built automatically as n_t equally spaced
-#'                points over [min(T_ij), max(T_ij)].
+#'                points over (min(T_ij), max(T_ij)).
 #' @param n_t     Positive integer. Number of grid points when t_grid is built
 #'                automatically. Default is 100.
 #'
@@ -40,6 +40,7 @@
 #'   $t_grid:  Numeric vector. The grid of evaluation points.
 #'   $mu_hat:  Numeric vector. Estimated mu_hat(t) for each t in t_grid.
 
+#' @export
 compute_mu_hat <- function(T_list, Y_list, h_mu, kernel, scheme,
                            t_grid = NULL, n_t = 100) {
   

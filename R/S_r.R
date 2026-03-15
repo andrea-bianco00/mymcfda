@@ -24,7 +24,7 @@
 #' Compute S_r(t) for one or more evaluation points
 #'
 #' @param t_vec   Numeric vector. Evaluation points t.
-#' @param T_list  List of length n. T_list[[i]] is the vector of observation
+#' @param T_list  List of length n. T_list((i)) is the vector of observation
 #'                times for subject i.
 #' @param h_mu    Numeric scalar. Bandwidth h_mu > 0.
 #' @param r       Integer. Order of the moment, typically 0, 1, or 2.
@@ -32,8 +32,9 @@
 #' @param scheme  Character string. Weighting scheme passed to compute_weights().
 #'                One of "OBS", "SUBJ", "OPTIMAL".
 #'
-#' @return Numeric vector of length(t_vec), where the k-th entry is S_r(t_vec[k]).
+#' @return Numeric vector of length(t_vec), where the k-th entry is S_r(t_vec(k)).
 
+#' @export
 compute_Sr <- function(t_vec, T_list, h_mu, r, kernel, scheme) {
   
   # --- input checks -----------------------------------------------------------

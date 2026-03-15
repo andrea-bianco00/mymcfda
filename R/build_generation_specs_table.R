@@ -16,45 +16,47 @@
 # =============================================================================
 
 
+#' @keywords internal
+#' @noRd
 build_generation_specs_table <- function(sim_data) {
-  
+
   # ---------------------------------------------------------------------------
   # INPUT VALIDATION
   # ---------------------------------------------------------------------------
   if (!is.list(sim_data)) {
     stop("sim_data must be the output of generate_full_snippet_data().")
   }
-  
+
   required_names <- c("config", "summary", "design_info", "process_info")
   if (!all(required_names %in% names(sim_data))) {
     stop("sim_data must contain: config, summary, design_info, process_info.")
   }
-  
+
   cfg <- sim_data$config
   smy <- sim_data$summary
-  
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
   fmt_value <- function(x) {
     if (is.null(x)) return("NULL")
-    
+
     if (is.function(x)) {
       body_txt <- paste(deparse(body(x)), collapse = " ")
       return(paste0("function: ", body_txt))
     }
-    
+
     if (is.atomic(x) && length(x) == 1) {
       return(as.character(x))
     }
-    
+
     if (is.atomic(x) && length(x) > 1) {
       return(paste0("c(", paste(x, collapse = ", "), ")"))
     }
-    
+
     if (is.list(x)) {
       if (length(x) == 0) return("list()")
-      
+
       if (!is.null(names(x))) {
         parts <- mapply(
           function(nm, val) paste0(nm, "=", fmt_value(val)),
@@ -68,13 +70,13 @@ build_generation_specs_table <- function(sim_data) {
                       ")"))
       }
     }
-    
+
     paste(capture.output(str(x)), collapse = " ")
   }
-  
+
   corr_formula_text <- function(corr_type, corr_params) {
     if (is.null(corr_type)) return("NULL")
-    
+
     if (corr_type == "matern") {
       th1 <- if (!is.null(corr_params$theta1)) corr_params$theta1 else "?"
       th2 <- if (!is.null(corr_params$theta2)) corr_params$theta2 else "?"
@@ -85,7 +87,7 @@ build_generation_specs_table <- function(sim_data) {
         )
       )
     }
-    
+
     if (corr_type == "power_exponential") {
       th1 <- if (!is.null(corr_params$theta1)) corr_params$theta1 else "?"
       th2 <- if (!is.null(corr_params$theta2)) corr_params$theta2 else "?"
@@ -95,7 +97,7 @@ build_generation_specs_table <- function(sim_data) {
         )
       )
     }
-    
+
     if (corr_type == "rational_quadratic") {
       theta <- if (!is.null(corr_params$theta)) corr_params$theta else "?"
       alpha <- if (!is.null(corr_params$alpha)) corr_params$alpha else "?"
@@ -106,10 +108,10 @@ build_generation_specs_table <- function(sim_data) {
         )
       )
     }
-    
+
     "Unknown correlation formula"
   }
-  
+
   seed_mode_text <- function(seed, seed_list, resolved_seeds) {
     if (!is.null(seed_list)) {
       return("Advanced block-specific seeding via seed_list")
@@ -119,7 +121,7 @@ build_generation_specs_table <- function(sim_data) {
     }
     return("No seed provided")
   }
-  
+
   noise_sigma_text <- function(noise_structure, sigma0) {
     if (noise_structure == "homoscedastic") {
       return(paste0("constant SD: ", fmt_value(sigma0)))
@@ -129,7 +131,7 @@ build_generation_specs_table <- function(sim_data) {
     }
     return(fmt_value(sigma0))
   }
-  
+
   # ---------------------------------------------------------------------------
   # BUILD ROWS
   # ---------------------------------------------------------------------------
@@ -138,7 +140,7 @@ build_generation_specs_table <- function(sim_data) {
     c("General", "m_mean", fmt_value(cfg$m_mean)),
     c("General", "delta", fmt_value(cfg$delta)),
     c("General", "road", fmt_value(cfg$road)),
-    
+
     c("Seeds", "seed_mode", seed_mode_text(cfg$seed, cfg$seed_list, cfg$resolved_seeds)),
     c("Seeds", "seed", fmt_value(cfg$seed)),
     c("Seeds", "seed_list", fmt_value(cfg$seed_list)),
@@ -146,27 +148,27 @@ build_generation_specs_table <- function(sim_data) {
     c("Seeds", "design_seed_meaning", "controls m_i, O_i, T_ij generation"),
     c("Seeds", "process_seed_meaning", "controls centred process generation Z_i(T_i)"),
     c("Seeds", "noise_seed_meaning", "controls noise generation epsilon_ij"),
-    
+
     c("Design", "fO_type", fmt_value(cfg$fO_type)),
     c("Design", "fO_params", fmt_value(cfg$fO_params)),
     c("Design", "f0_type", fmt_value(cfg$f0_type)),
     c("Design", "f0_params", fmt_value(cfg$f0_params)),
-    
+
     c("Mean", "mu_fn", fmt_value(cfg$mu_fn)),
-    
+
     c("Noise", "noise_structure", fmt_value(cfg$noise_structure)),
     c("Noise", "noise_scale", noise_sigma_text(cfg$noise_structure, cfg$sigma0)),
     c("Noise", "noise_mean", fmt_value(cfg$noise_mean)),
     c("Noise", "noise_type", fmt_value(cfg$noise_type)),
     c("Noise", "noise_params", fmt_value(cfg$noise_params)),
-    
+
     c("Summary", "n_subjects", fmt_value(smy$n_subjects)),
     c("Summary", "total_observations", fmt_value(smy$total_observations)),
     c("Summary", "mean_obs_per_subject", fmt_value(smy$mean_obs_per_subject)),
     c("Summary", "road_used", fmt_value(smy$road)),
     c("Summary", "noise_structure_used", fmt_value(smy$noise_structure))
   )
-  
+
   # ---------------------------------------------------------------------------
   # ROAD-SPECIFIC SECTION
   # ---------------------------------------------------------------------------
@@ -187,7 +189,7 @@ build_generation_specs_table <- function(sim_data) {
       )
     )
   }
-  
+
   if (identical(cfg$road, "decomposition")) {
     rows <- c(
       rows,
@@ -203,7 +205,7 @@ build_generation_specs_table <- function(sim_data) {
       )
     )
   }
-  
+
   # ---------------------------------------------------------------------------
   # BUILD TABLE
   # ---------------------------------------------------------------------------
@@ -211,9 +213,9 @@ build_generation_specs_table <- function(sim_data) {
     do.call(rbind, rows),
     stringsAsFactors = FALSE
   )
-  
+
   names(specs_table) <- c("section", "parameter", "value")
   rownames(specs_table) <- NULL
-  
+
   return(specs_table)
 }

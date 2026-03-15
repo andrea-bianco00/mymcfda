@@ -26,7 +26,7 @@
 
 #' Evaluate sigma_X(t) at observed times
 #'
-#' @param T_list       List of length n. T_list[[i]] contains the observation
+#' @param T_list       List of length n. T_list((i)) contains the observation
 #'                     times for subject i.
 #' @param res_sigmaX2  List. Output of compute_sigmaX2_hat(), containing:
 #'                     - t_grid
@@ -35,13 +35,14 @@
 #'                     Default is 2, meaning constant extrapolation at boundaries.
 #'
 #' @return A list of length n. For each subject i:
-#'         - sigmaX_obs_list[[i]] is a numeric vector of length m_i
+#'         - sigmaX_obs_list((i)) is a numeric vector of length m_i
 #'           containing sigmaX_hat(T_ij) = sqrt(sigmaX2_hat(T_ij))
 #'
 #' @examples
 #' # res_sigmaX2 <- compute_sigmaX2_hat(res_varsigma, sigma0_hat)
 #' # sigmaX_obs_list <- evaluate_sigmaX_on_observed_times(T_list, res_sigmaX2)
 
+#' @export
 evaluate_sigmaX_on_observed_times <- function(T_list, res_sigmaX2, rule = 2) {
   
   # ---------------------------------------------------------------------------

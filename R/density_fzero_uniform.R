@@ -45,9 +45,9 @@
 #' Uniform density for measurement times f_0
 #'
 #' @param s     Numeric vector. Points at which to evaluate f_0.
-#'              Values outside [0, delta] return 0.
+#'              Values outside (0, delta) return 0.
 #' @param delta Numeric in (0, 1). Snippet length. Determines the support
-#'              [0, delta] and the constant density value 1/delta.
+#'              (0, delta) and the constant density value 1/delta.
 #'
 #' @return Numeric vector of the same length as s with values of f_0(s).
 #'
@@ -55,12 +55,13 @@
 #' s <- seq(-0.1, 0.6, length.out = 500)
 #' f <- fzero_uniform(s, delta = 0.4)
 #' plot(s, f, type = "l", main = "f_0 uniform, delta = 0.4")
-#' # f_0 = 1/0.4 = 2.5 on [0, 0.4], zero elsewhere
+#' # f_0 = 1/0.4 = 2.5 on (0, 0.4), zero elsewhere
 #'
 #' # Verify it integrates to 1
 #' s_fine <- seq(0, 0.4, length.out = 10000)
 #' sum(fzero_uniform(s_fine, delta = 0.4)) * (0.4 / 10000)  # approximately 1
 
+#' @export
 fzero_uniform <- function(s, delta) {
   
   # ---------------------------------------------------------------------------

@@ -32,7 +32,7 @@
 
 
 
-#' Draw n i.i.d. reference times from f_O on [delta/2, 1 - delta/2]
+#' Draw n i.i.d. reference times from f_O on (delta/2, 1 - delta/2)
 #'
 #' @param n      Integer >= 1. Number of samples to draw.
 #' @param delta  Numeric in (0, 1). Snippet length.
@@ -50,7 +50,7 @@
 #'               value defined in each sampling file is used.
 #'
 #' @return Numeric vector of length n with samples O_1, ..., O_n,
-#'         all in [delta/2, 1 - delta/2].
+#'         all in (delta/2, 1 - delta/2).
 #'
 #' @examples
 #' # Uniform (default in Lin & Wang 2022)
@@ -68,6 +68,7 @@
 #' O <- sample_fO(n = 200, delta = 0.4, type = "truncexp",
 #'                params = list(lambda = 2))
 
+#' @export
 sample_fO <- function(n, delta, type = "uniform", params = list()) {
   
   # ---------------------------------------------------------------------------

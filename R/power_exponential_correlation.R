@@ -25,7 +25,7 @@
 #' @param s       Numeric vector. First set of time points.
 #' @param t       Numeric vector. Second set of time points.
 #'                The function computes the full outer matrix rho(s_i, t_j).
-#' @param theta1  Numeric in (0, 2]. Shape parameter.
+#' @param theta1  Numeric in (0, 2). Shape parameter.
 #'                theta1 = 1  -> exponential
 #'                theta1 = 2  -> squared exponential (Gaussian)
 #' @param theta2  Numeric > 0. Scale (range) parameter.
@@ -43,6 +43,7 @@
 #' # Squared exponential (theta1=2)
 #' rho <- power_exponential_correlation(s, t, theta1 = 2, theta2 = 0.5)
 
+#' @export
 power_exponential_correlation <- function(s, t, theta1, theta2) {
   
   # --- input checks -----------------------------------------------------------

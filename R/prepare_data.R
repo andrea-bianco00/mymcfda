@@ -52,6 +52,7 @@
 #' Y_list <- list(c(1.2, 0.9, 1.1), c(0.8, 1.0, 1.2, 0.9), c(1.3, 1.1))
 #' result <- prepare_data(T_list = T_list, Y_list = Y_list)
 
+#' @export
 prepare_data <- function(data   = NULL,
                          T_list = NULL,
                          Y_list = NULL,

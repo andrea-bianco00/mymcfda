@@ -28,26 +28,27 @@
 # =============================================================================
 
 
-#' Draw m i.i.d. samples from the Uniform density of f_0 on [0, delta]
+#' Draw m i.i.d. samples from the Uniform density of f_0 on (0, delta)
 #'
 #' @param m     Integer >= 1. Number of samples to draw (measurements per
 #'              subject).
 #' @param delta Numeric in (0, 1). Snippet length. Determines the support
-#'              [0, delta].
+#'              (0, delta).
 #'
 #' @return Numeric vector of length m with samples S_1, ..., S_m,
-#'         all in [0, delta]. These are RELATIVE positions within the
+#'         all in (0, delta). These are RELATIVE positions within the
 #'         window — add O_i - delta/2 to obtain the actual T_ij.
 #'
 #' @examples
 #' # Sample 5 relative positions within a window of length 0.4
 #' S <- sample_fzero_uniform(m = 5, delta = 0.4)
-#' range(S)   # inside [0, 0.4]
+#' range(S)   # inside (0, 0.4)
 #'
 #' # Actual measurement times for subject i with O_i = 0.6
 #' O_i <- 0.6; delta <- 0.4
-#' T_ij <- S + O_i - delta / 2   # shift to [O_i - 0.2, O_i + 0.2] = [0.4, 0.8]
+#' T_ij <- S + O_i - delta / 2   # shift to (O_i - 0.2, O_i + 0.2) = (0.4, 0.8)
 
+#' @export
 sample_fzero_uniform <- function(m, delta) {
   
   # ---------------------------------------------------------------------------

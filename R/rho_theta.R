@@ -51,6 +51,7 @@
 #' rho_theta(s, t, theta = c(1, 0.5), model = "rational_quadratic")
 #' rho_theta(s, t, theta = c(0.5, 1), model = "matern")
 
+#' @export
 rho_theta <- function(s, t, theta, model) {
   
   # ---------------------------------------------------------------------------

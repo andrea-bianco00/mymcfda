@@ -2,7 +2,7 @@ Package: mymcfda
 Title: Independent Reimplementation of Mean and Covariance Estimation for Functional Snippets
 Version: 0.0.1
 Authors@R: 
-    person("Andrea", "Bianco", email = "TUA_EMAIL", role = c("aut", "cre"))
+    person("Andrea", "Bianco", email = "andrea.bianco00.ab@gmail.com", role = c("aut", "cre"))
 Description: An independent R implementation of simulation and estimation
     tools for mean, variance, and covariance analysis of functional snippet data.
     The package was developed after studying the methodology introduced in
@@ -16,8 +16,9 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Imports:
+    MASS,
     stats,
     utils,
     graphics

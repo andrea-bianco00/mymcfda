@@ -30,7 +30,7 @@
 #' Evaluate the density f_O of reference times at u
 #'
 #' @param u      Numeric vector. Points at which to evaluate f_O.
-#'               Values outside [delta/2, 1 - delta/2] return 0.
+#'               Values outside (delta/2, 1 - delta/2) return 0.
 #' @param delta  Numeric in (0, 1). Snippet length.
 #' @param type   Character. Family of f_O. One of:
 #'                 "uniform"   (default, Lin & Wang 2022)
@@ -73,6 +73,7 @@
 #' legend("topright", legend = c("uniform","truncnorm","truncbeta","truncexp"),
 #'        col = c("black","red","blue","green"), lty = 1)
 
+#' @export
 eval_fO <- function(u, delta, type = "uniform", params = list()) {
   
   # ---------------------------------------------------------------------------

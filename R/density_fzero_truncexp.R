@@ -48,9 +48,9 @@
 #' Truncated Exponential density for measurement times f_0
 #'
 #' @param s      Numeric vector. Points at which to evaluate f_0.
-#'               Values outside [0, delta] return 0.
+#'               Values outside (0, delta) return 0.
 #' @param delta  Numeric in (0, 1). Snippet length. Determines the support
-#'               [0, delta].
+#'               (0, delta).
 #' @param lambda Numeric > 0. Decay rate parameter.
 #'                 small lambda  -> nearly uniform (slow decay)
 #'                 large lambda  -> concentrated near s = 0 (fast decay)
@@ -78,6 +78,7 @@
 #' s_fine <- seq(0, 0.4, length.out = 10000)
 #' sum(fzero_truncexp(s_fine, delta = 0.4)) * (0.4 / 10000)  # approximately 1
 
+#' @export
 fzero_truncexp <- function(s, delta, lambda = NULL) {
   
   # ---------------------------------------------------------------------------

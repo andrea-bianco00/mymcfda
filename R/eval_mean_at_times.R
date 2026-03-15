@@ -48,12 +48,12 @@
 
 #' Evaluate a mean function at measurement times
 #'
-#' @param T_list  List of n numeric vectors. T_list[[i]] contains the m_i
-#'                measurement times for subject i, all in [0, 1].
+#' @param T_list  List of n numeric vectors. T_list((i)) contains the m_i
+#'                measurement times for subject i, all in (0, 1).
 #' @param mu_fn   Function: numeric vector -> numeric vector of same length.
 #'                The user-defined mean function mu(t). Must be vectorised.
 #'
-#' @return A list of n numeric vectors. mu_values[[i]] contains
+#' @return A list of n numeric vectors. mu_values((i)) contains
 #'         mu(T_i1), ..., mu(T_im_i).
 #'
 #' @examples
@@ -64,10 +64,11 @@
 #' mu_vals <- eval_mean_at_times(T_list, mu_fn)
 #' str(mu_vals)
 #' # List of 3
-#' #  $ : num [1:3] ...
-#' #  $ : num [1:2] ...
-#' #  $ : num [1:4] ...
+#' #  $ : num (1:3) ...
+#' #  $ : num (1:2) ...
+#' #  $ : num (1:4) ...
 
+#' @export
 eval_mean_at_times <- function(T_list, mu_fn) {
   
   # ---------------------------------------------------------------------------

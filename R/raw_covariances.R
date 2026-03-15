@@ -23,11 +23,11 @@
 
 #' Compute raw off-diagonal covariance pseudo-observations
 #'
-#' @param T_list       List of length n. T_list[[i]] contains the observation
+#' @param T_list       List of length n. T_list((i)) contains the observation
 #'                     times for subject i.
-#' @param Y_list       List of length n. Y_list[[i]] contains the observed
+#' @param Y_list       List of length n. Y_list((i)) contains the observed
 #'                     values for subject i.
-#' @param mu_obs_list  List of length n. mu_obs_list[[i]] contains the values
+#' @param mu_obs_list  List of length n. mu_obs_list((i)) contains the values
 #'                     mu_hat(T_ij) for j = 1, ..., m_i.
 #'
 #' @return A data.frame with one row for each ordered off-diagonal pair (j,l)
@@ -49,6 +49,7 @@
 #' # mu_obs_list <- compute_mu_on_observed_times(T_list, Y_list, h_mu, kernel, scheme)
 #' # raw_cov_df  <- compute_raw_covariances(T_list, Y_list, mu_obs_list)
 
+#' @export
 compute_raw_covariances <- function(T_list, Y_list, mu_obs_list) {
   
   # ---------------------------------------------------------------------------

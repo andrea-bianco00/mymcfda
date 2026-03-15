@@ -50,6 +50,7 @@
 #' d <- abs(outer(s, t, "-"))
 #' max(abs(rho - exp(-d)))  # ~0 (up to numerical precision)
 
+#' @export
 matern_correlation <- function(s, t, theta1, theta2) {
   
   # --- input checks -----------------------------------------------------------

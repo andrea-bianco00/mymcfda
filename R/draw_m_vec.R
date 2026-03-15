@@ -61,6 +61,7 @@
 #' m_vec3 <- draw_m_vec(n = 200, m_mean = 2.5)
 #' mean(m_vec3)    # approximately 2.5 (but all >= 2)
 
+#' @export
 draw_m_vec <- function(n, m_mean = 4) {
   
   # ---------------------------------------------------------------------------

@@ -46,6 +46,7 @@
 #' out <- assemble_observations(mu_values, Z_list, noise_list)
 #' out$Y_list
 
+#' @export
 assemble_observations <- function(mu_values, Z_list, noise_list) {
   
   # ---------------------------------------------------------------------------

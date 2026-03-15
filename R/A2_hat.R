@@ -18,39 +18,41 @@
 #   scalar A2_hat
 # ============================================================
 
+#' @keywords internal
+#' @noRd
 compute_A2 <- function(T_list, Y_list, h0) {
-  
+
   n <- length(T_list)
-  
+
   total <- 0
-  
+
   for (i in seq_len(n)) {
-    
+
     Ti <- T_list[[i]]
     Yi <- Y_list[[i]]
-    
+
     mi <- length(Ti)
-    
+
     if (mi < 2) next
-    
+
     sum_pairs <- 0
-    
+
     for (j in seq_len(mi)) {
       for (l in seq_len(mi)) {
-        
+
         if (j == l) next
-        
+
         if (abs(Ti[j] - Ti[l]) < h0) {
           sum_pairs <- sum_pairs + Yi[j] * Yi[l]
         }
-        
+
       }
     }
-    
+
     total <- total + (1 / (mi * (mi - 1))) * sum_pairs
   }
-  
+
   A2_hat <- total / n
-  
+
   return(A2_hat)
 }

@@ -33,9 +33,9 @@
 #' Truncated Normal density for reference times f_O
 #'
 #' @param u     Numeric vector. Points at which to evaluate f_O.
-#'              Values outside [delta/2, 1 - delta/2] return 0.
+#'              Values outside (delta/2, 1 - delta/2) return 0.
 #' @param delta Numeric in (0, 1). Snippet length. Determines the support
-#'              [delta/2, 1 - delta/2].
+#'              (delta/2, 1 - delta/2).
 #' @param mu_O  Numeric. Centre of the normal distribution. Default is the
 #'              midpoint of the support: (delta/2 + 1 - delta/2) / 2 = 0.5.
 #' @param sd_O  Numeric > 0. Scale of the normal distribution. Default is
@@ -58,6 +58,7 @@
 #' # Verify it integrates to 1
 #' sum(f) * (1 / 500)   # approximately 1
 
+#' @export
 fO_truncnorm <- function(u, delta, mu_O = NULL, sd_O = NULL) {
   
   # ---------------------------------------------------------------------------

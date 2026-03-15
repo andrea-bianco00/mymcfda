@@ -89,9 +89,10 @@
 #' @param noise_params Named list of parameters for the distribution.
 #'                     Default: list().
 #'
-#' @return A list of n numeric vectors. noise_list[[i]] contains the m_i
+#' @return A list of n numeric vectors. noise_list((i)) contains the m_i
 #'         noise values for subject i.
 
+#' @export
 generate_noise <- function(T_list,
                            sigma0,
                            noise_mean   = 0,

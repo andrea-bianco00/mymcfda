@@ -110,6 +110,7 @@
 #'   corr_params = list(theta1 = 1, theta2 = 0.25)
 #' )
 
+#' @export
 compute_cov_from_dec <- function(s,
                                  t,
                                  sigmaX_fn,

@@ -47,6 +47,7 @@
 #' #   model       = "power_exponential"
 #' # )
 
+#' @export
 compute_covariance_surface <- function(res_sigmaX2,
                                        theta,
                                        model,

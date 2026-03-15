@@ -54,9 +54,9 @@
 #' Rescaled Beta density for measurement times f_0
 #'
 #' @param s     Numeric vector. Points at which to evaluate f_0.
-#'              Values outside [0, delta] return 0.
+#'              Values outside (0, delta) return 0.
 #' @param delta Numeric in (0, 1). Snippet length. Determines the support
-#'              [0, delta].
+#'              (0, delta).
 #' @param a_0   Numeric > 0. First shape parameter of Beta(a_0, b_0).
 #'              Must be > 1 for strict positivity at s = 0.
 #'              Default: 2.
@@ -85,6 +85,7 @@
 #' s_fine <- seq(0, 0.4, length.out = 10000)
 #' sum(fzero_truncbeta(s_fine, delta = 0.4)) * (0.4 / 10000)  # approximately 1
 
+#' @export
 fzero_truncbeta <- function(s, delta, a_0 = 2, b_0 = 2) {
   
   # ---------------------------------------------------------------------------

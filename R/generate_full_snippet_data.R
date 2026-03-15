@@ -104,6 +104,7 @@
 #'   - config
 #'   - summary
 
+#' @export
 generate_full_snippet_data <- function(
     n,
     m_mean          = 4,

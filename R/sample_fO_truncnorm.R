@@ -34,7 +34,7 @@
 #'
 #' @param n     Integer >= 1. Number of samples to draw.
 #' @param delta Numeric in (0, 1). Snippet length. Determines the support
-#'              [delta/2, 1 - delta/2].
+#'              (delta/2, 1 - delta/2).
 #' @param mu_O  Numeric. Centre of the normal distribution. Default is the
 #'              midpoint of the support: 0.5.
 #' @param sd_O  Numeric > 0. Scale of the normal distribution. Default is
@@ -42,7 +42,7 @@
 #'              the support.
 #'
 #' @return Numeric vector of length n with samples O_1, ..., O_n,
-#'         all in [delta/2, 1 - delta/2].
+#'         all in (delta/2, 1 - delta/2).
 #'
 #' @examples
 #' # Default: centred at 0.5
@@ -52,6 +52,7 @@
 #' # Shifted towards 0.7: more subjects enter late
 #' O2 <- sample_fO_truncnorm(n = 500, delta = 0.4, mu_O = 0.7, sd_O = 0.1)
 
+#' @export
 sample_fO_truncnorm <- function(n, delta, mu_O = NULL, sd_O = NULL) {
   
   # ---------------------------------------------------------------------------

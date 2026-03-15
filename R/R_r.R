@@ -24,9 +24,9 @@
 #' Compute R_r(t) for one or more evaluation points
 #'
 #' @param t_vec   Numeric vector. Evaluation points t.
-#' @param T_list  List of length n. T_list[[i]] is the vector of observation
+#' @param T_list  List of length n. T_list((i)) is the vector of observation
 #'                times for subject i.
-#' @param Y_list  List of length n. Y_list[[i]] is the vector of observed values
+#' @param Y_list  List of length n. Y_list((i)) is the vector of observed values
 #'                for subject i.
 #' @param h_mu    Numeric scalar. Bandwidth h_mu > 0.
 #' @param r       Integer. Order of the moment, typically 0 or 1.
@@ -34,8 +34,9 @@
 #' @param scheme  Character string. Weighting scheme passed to compute_weights().
 #'                One of "OBS", "SUBJ", "OPTIMAL".
 #'
-#' @return Numeric vector of length(t_vec), where the k-th entry is R_r(t_vec[k]).
+#' @return Numeric vector of length(t_vec), where the k-th entry is R_r(t_vec(k)).
 
+#' @export
 compute_Rr <- function(t_vec, T_list, Y_list, h_mu, r, kernel, scheme) {
   
   # --- input checks -----------------------------------------------------------

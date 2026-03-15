@@ -42,7 +42,7 @@
 #'                         - t1
 #'                         - t2
 #'                         - raw_cov
-#' @param sigmaX_obs_list  List of length n. sigmaX_obs_list[[i]][j] is
+#' @param sigmaX_obs_list  List of length n. sigmaX_obs_list((i))(j) is
 #'                         sigmaX_hat(T_ij).
 #' @param theta            Numeric vector of length 2: c(theta1, theta2).
 #' @param model            Character string. One of:
@@ -75,6 +75,7 @@
 #' #   model           = "power_exponential"
 #' # )
 
+#' @export
 compute_Qn_theta <- function(raw_cov_df,
                              sigmaX_obs_list,
                              theta,

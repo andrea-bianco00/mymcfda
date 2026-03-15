@@ -94,6 +94,7 @@
 #'   - Z_list : list of n numeric vectors with Z_i(T_ij) values
 #'   - scores : n x K matrix of scores xi_{ik}
 
+#' @export
 generate_KL_process <- function(T_list,
                                 eigenfn_list,
                                 eigenval_vec,

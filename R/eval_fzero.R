@@ -31,7 +31,7 @@
 #' Evaluate the density f_0 of measurement times at s
 #'
 #' @param s      Numeric vector. Points at which to evaluate f_0.
-#'               Values outside [0, delta] return 0.
+#'               Values outside (0, delta) return 0.
 #' @param delta  Numeric in (0, 1). Snippet length.
 #' @param type   Character. Family of f_0. One of:
 #'                 "uniform"   (default, Lin & Wang 2022)
@@ -74,6 +74,7 @@
 #' legend("topright", legend = c("uniform","truncnorm","truncbeta","truncexp"),
 #'        col = c("black","red","blue","green"), lty = 1)
 
+#' @export
 eval_fzero <- function(s, delta, type = "uniform", params = list()) {
   
   # ---------------------------------------------------------------------------

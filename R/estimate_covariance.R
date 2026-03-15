@@ -73,6 +73,7 @@
 #' # cov_fit$theta_hat
 #' # cov_fit$covariance_hat
 
+#' @export
 estimate_covariance <- function(T_list,
                                 Y_list,
                                 mu_obs_list,

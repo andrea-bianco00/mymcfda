@@ -37,7 +37,7 @@
 
 
 
-#' Draw m i.i.d. measurement times from f_0 on [0, delta]
+#' Draw m i.i.d. measurement times from f_0 on (0, delta)
 #'
 #' @param m      Integer >= 1. Number of samples to draw (measurements per
 #'               subject).
@@ -56,7 +56,7 @@
 #'               value defined in each sampling file is used.
 #'
 #' @return Numeric vector of length m with samples S_1, ..., S_m,
-#'         all in [0, delta]. These are RELATIVE positions within the
+#'         all in (0, delta). These are RELATIVE positions within the
 #'         window — add O_i - delta/2 to obtain the actual T_ij.
 #'
 #' @examples
@@ -75,6 +75,7 @@
 #' S <- sample_fzero(m = 5, delta = 0.4, type = "truncexp",
 #'                   params = list(lambda = 2))
 
+#' @export
 sample_fzero <- function(m, delta, type = "uniform", params = list()) {
   
   # ---------------------------------------------------------------------------

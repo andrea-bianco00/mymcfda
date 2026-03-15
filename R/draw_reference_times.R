@@ -34,7 +34,7 @@
 #'
 #' @param n        Integer >= 1. Number of subjects.
 #' @param delta    Numeric in (0, 1). Snippet length. Each subject's
-#'                 observation window [O_i - delta/2, O_i + delta/2]
+#'                 observation window (O_i - delta/2, O_i + delta/2)
 #'                 has length exactly delta.
 #' @param type     Character. Distribution of reference times. One of:
 #'                   "uniform"   (default, as in Lin & Wang 2022)
@@ -47,18 +47,18 @@
 #'
 #' @return A list with components:
 #'   - O_vec   : numeric vector of length n with O_1, ..., O_n in
-#'               [delta/2, 1 - delta/2]. LATENT in real data.
+#'               (delta/2, 1 - delta/2). LATENT in real data.
 #'   - windows : data frame with n rows and columns:
 #'       - A : left endpoint  A_i = O_i - delta/2
 #'       - B : right endpoint B_i = O_i + delta/2
-#'     All windows satisfy [A_i, B_i] subset [0, 1]. LATENT in real data.
+#'     All windows satisfy (A_i, B_i) subset (0, 1). LATENT in real data.
 #'
 #' @examples
 #' # Default: uniform (as in Lin & Wang 2022)
 #' result <- draw_reference_times(n = 100, delta = 0.4)
-#' range(result$O_vec)          # inside [0.2, 0.8]
-#' range(result$windows$A)      # inside [0.0, 0.6]
-#' range(result$windows$B)      # inside [0.4, 1.0]
+#' range(result$O_vec)          # inside (0.2, 0.8)
+#' range(result$windows$A)      # inside (0.0, 0.6)
+#' range(result$windows$B)      # inside (0.4, 1.0)
 #'
 #' # Truncated Normal
 #' result <- draw_reference_times(n = 100, delta = 0.4,
@@ -70,6 +70,7 @@
 #'                                type   = "truncexp",
 #'                                params = list(lambda = 2))
 
+#' @export
 draw_reference_times <- function(n,
                                  delta,
                                  type   = "uniform",

@@ -33,7 +33,7 @@
 #'
 #' @param n      Integer >= 1. Number of samples to draw.
 #' @param delta  Numeric in (0, 1). Snippet length. Determines the support
-#'               [delta/2, 1 - delta/2].
+#'               (delta/2, 1 - delta/2).
 #' @param lambda Numeric > 0. Decay rate parameter.
 #'                 small lambda  -> nearly uniform (slow decay)
 #'                 large lambda  -> concentrated near delta/2 (fast decay)
@@ -41,7 +41,7 @@
 #'               support length.
 #'
 #' @return Numeric vector of length n with samples O_1, ..., O_n,
-#'         all in [delta/2, 1 - delta/2].
+#'         all in (delta/2, 1 - delta/2).
 #'
 #' @examples
 #' # Default lambda
@@ -54,6 +54,7 @@
 #' # Slow decay: nearly uniform
 #' O3 <- sample_fO_truncexp(n = 500, delta = 0.4, lambda = 0.01)
 
+#' @export
 sample_fO_truncexp <- function(n, delta, lambda = NULL) {
   
   # ---------------------------------------------------------------------------
