@@ -1,279 +1,275 @@
-# =============================================================================
-# compute_Qn_theta.R
-# -----------------------------------------------------------------------------
-# Optimized computation of the empirical criterion Q_n(theta) used to estimate
-# the parametric correlation rho_theta(s, t) in the covariance block.
-#
-# Paper criterion:
-#
-#   Q_n(theta) =
-#     sum_{i=1}^n [ 1 / {m_i (m_i - 1)} ] *
-#       sum_{j != l}
-#         [ sigmaX_hat(T_ij) * rho_theta(T_ij, T_il) * sigmaX_hat(T_il)
-#           - C_ijl ]^2
-#
-# where:
-#   C_ijl = {Y_ij - mu_hat(T_ij)} {Y_il - mu_hat(T_il)}
-#
-# IMPORTANT:
-#   This implementation is optimized:
-#   - no rowwise mapply over rho_theta()
-#   - no N x N matrix construction
-#   - rho_theta is evaluated directly on the vector of pairwise distances
-#
-# Supported models:
-#   - "power_exponential"
-#   - "rational_quadratic"
-#   - "matern"
-#
-# Dependencies:
-#   - raw_cov_df from compute_raw_covariances()
-#   - sigmaX_obs_list from evaluate_sigmaX_on_observed_times()
-# =============================================================================
-
-
-#' Compute the empirical criterion Q_n(theta) (optimized version)
+#' Empirical criterion Q_n(theta) for covariance parameter estimation
 #'
-#' @param raw_cov_df       Data frame returned by compute_raw_covariances().
-#'                         Must contain columns:
-#'                         - id
-#'                         - j
-#'                         - l
-#'                         - t1
-#'                         - t2
-#'                         - raw_cov
-#' @param sigmaX_obs_list  List of length n. sigmaX_obs_list((i))(j) is
-#'                         sigmaX_hat(T_ij).
-#' @param theta            Numeric vector of length 2: c(theta1, theta2).
-#' @param model            Character string. One of:
-#'                         - "power_exponential"
-#'                         - "rational_quadratic"
-#'                         - "matern"
-#' @param return_details   Logical. If TRUE, return diagnostics in addition
-#'                         to Q_n(theta).
+#' Computes the empirical objective function used to estimate the parameters
+#' of a parametric correlation model \eqn{\rho_\theta(s,t)} in the covariance
+#' structure of sparse functional data.
+#'
+#' The criterion corresponds to:
+#'
+#' \deqn{
+#' Q_n(\theta) =
+#' \sum_{i=1}^{n} \frac{1}{m_i(m_i-1)}
+#' \sum_{j \neq l}
+#' \left[
+#' \sigma_X(T_{ij}) \rho_\theta(T_{ij},T_{il}) \sigma_X(T_{il})
+#' - C_{ijl}
+#' \right]^2
+#' }
+#'
+#' where
+#'
+#' \deqn{
+#' C_{ijl} = (Y_{ij} - \hat{\mu}(T_{ij})) (Y_{il} - \hat{\mu}(T_{il}))
+#' }
+#'
+#' The function is designed to be used inside an optimizer (typically
+#' \code{optim()}) to estimate the parameter vector \eqn{\theta}.
+#'
+#' Supported correlation models:
+#'
+#' * `"power_exponential"`
+#' * `"rational_quadratic"`
+#' * `"matern"`
+#'
+#' Numerical safeguards are implemented to ensure robustness during
+#' optimization.
+#'
+#' @param raw_cov_df Data frame produced by \code{compute_raw_covariances()}.
+#' Must contain columns:
+#' \itemize{
+#' \item id
+#' \item j
+#' \item l
+#' \item t1
+#' \item t2
+#' \item raw_cov
+#' }
+#'
+#' @param sigmaX_obs_list List where element \code{i} contains the estimated
+#' values of \eqn{\sigma_X(T_{ij})} evaluated at the observed time points of
+#' subject \code{i}.
+#'
+#' @param theta Numeric vector of length 2 containing the parameters of the
+#' correlation model.
+#'
+#' @param model Character string specifying the correlation model.
+#' Allowed values are:
+#'
+#' \itemize{
+#' \item `"power_exponential"`
+#' \item `"rational_quadratic"`
+#' \item `"matern"`
+#' }
+#'
+#' @param return_details Logical. If \code{FALSE} (default), the function
+#' returns only the value of the criterion \eqn{Q_n(\theta)}.
+#' If \code{TRUE}, diagnostic quantities are also returned.
 #'
 #' @return
-#' If return_details = FALSE:
-#'   Numeric scalar Q_n(theta).
+#' If \code{return_details = FALSE}:
 #'
-#' If return_details = TRUE:
-#'   A list with components:
-#'   - Qn
-#'   - n_pairs
-#'   - rho
-#'   - sigma1
-#'   - sigma2
-#'   - fitted_cov
-#'   - residuals
-#'   - weights
+#' A numeric scalar equal to \eqn{Q_n(\theta)}.
+#'
+#' If \code{return_details = TRUE}:
+#'
+#' A list containing
+#'
+#' \itemize{
+#' \item Qn
+#' \item n_pairs
+#' \item rho
+#' \item sigma1
+#' \item sigma2
+#' \item fitted_cov
+#' \item residuals
+#' \item weights
+#' }
 #'
 #' @examples
+#' # Example usage (assuming required objects exist)
 #' # Qn_val <- compute_Qn_theta(
 #' #   raw_cov_df      = raw_cov_df,
 #' #   sigmaX_obs_list = sigmaX_obs_list,
-#' #   theta           = c(1, 0.5),
-#' #   model           = "power_exponential"
+#' #   theta           = c(1, 0.2),
+#' #   model           = "matern"
 #' # )
-
+#'
 #' @export
 compute_Qn_theta <- function(raw_cov_df,
                              sigmaX_obs_list,
                              theta,
                              model,
                              return_details = FALSE) {
-  
+
   # ---------------------------------------------------------------------------
   # 1. input checks
   # ---------------------------------------------------------------------------
   if (!is.data.frame(raw_cov_df)) {
     stop("'raw_cov_df' must be a data.frame.")
   }
-  
+
   required_cols <- c("id", "j", "l", "t1", "t2", "raw_cov")
   missing_cols <- setdiff(required_cols, names(raw_cov_df))
+
   if (length(missing_cols) > 0) {
     stop(sprintf(
       "'raw_cov_df' is missing required column(s): %s.",
       paste(missing_cols, collapse = ", ")
     ))
   }
-  
+
   if (!is.list(sigmaX_obs_list)) {
     stop("'sigmaX_obs_list' must be a list.")
   }
-  
+
   if (!is.numeric(theta) || length(theta) != 2 || any(is.na(theta))) {
-    stop("'theta' must be a numeric vector of length 2: c(theta1, theta2).")
+    stop("'theta' must be a numeric vector of length 2.")
   }
-  
+
   if (!is.character(model) || length(model) != 1) {
-    stop("'model' must be a single character string.")
+    stop("'model' must be a character string.")
   }
-  
+
   valid_models <- c("power_exponential", "rational_quadratic", "matern")
+
   if (!model %in% valid_models) {
-    stop(sprintf(
-      "'model' must be one of: %s.",
-      paste(valid_models, collapse = ", ")
-    ))
+    stop("Invalid model.")
   }
-  
+
   theta1 <- theta[1]
   theta2 <- theta[2]
-  
+
   if (!is.finite(theta1) || !is.finite(theta2)) {
-    stop("'theta1' and 'theta2' must be finite.")
+    if (!return_details) return(1e12)
   }
-  
-  if (model == "power_exponential") {
-    if (theta1 <= 0 || theta1 > 2) {
-      stop("For 'power_exponential', theta1 must be in (0, 2].")
-    }
-    if (theta2 <= 0) {
-      stop("For 'power_exponential', theta2 must be > 0.")
-    }
-  } else {
-    if (theta1 <= 0 || theta2 <= 0) {
-      stop(sprintf("For '%s', theta1 and theta2 must both be > 0.", model))
-    }
-  }
-  
-  # Empty case
-  if (nrow(raw_cov_df) == 0) {
-    warning("raw_cov_df has 0 rows. Returning NA.")
-    if (!return_details) return(NA_real_)
-    return(list(
-      Qn         = NA_real_,
-      n_pairs    = 0L,
-      rho        = numeric(0),
-      sigma1     = numeric(0),
-      sigma2     = numeric(0),
-      fitted_cov = numeric(0),
-      residuals  = numeric(0),
-      weights    = numeric(0)
-    ))
-  }
-  
+
   # ---------------------------------------------------------------------------
-  # 2. validate indices and extract m_i
+  # 2. subject sizes
   # ---------------------------------------------------------------------------
   n <- length(sigmaX_obs_list)
   m_vec <- sapply(sigmaX_obs_list, length)
-  
-  if (any(raw_cov_df$id < 1) || any(raw_cov_df$id > n)) {
-    stop("'raw_cov_df$id' contains invalid subject indices.")
-  }
-  
-  for (r in seq_len(nrow(raw_cov_df))) {
-    i <- raw_cov_df$id[r]
-    j <- raw_cov_df$j[r]
-    l <- raw_cov_df$l[r]
-    
-    if (!is.numeric(sigmaX_obs_list[[i]]) || any(is.na(sigmaX_obs_list[[i]]))) {
-      stop(sprintf("sigmaX_obs_list[[%d]] must be a numeric vector without NA.", i))
-    }
-    
-    if (j < 1 || j > m_vec[i]) {
-      stop(sprintf("Row %d: j=%d is out of bounds for subject %d.", r, j, i))
-    }
-    if (l < 1 || l > m_vec[i]) {
-      stop(sprintf("Row %d: l=%d is out of bounds for subject %d.", r, l, i))
-    }
-  }
-  
+
   # ---------------------------------------------------------------------------
-  # 3. extract sigmaX_hat(T_ij) and sigmaX_hat(T_il)
+  # 3. sigmaX extraction
   # ---------------------------------------------------------------------------
   sigma1 <- mapply(
-    function(i, j) sigmaX_obs_list[[i]][j],
-    i = raw_cov_df$id,
-    j = raw_cov_df$j
+    function(i,j) sigmaX_obs_list[[i]][j],
+    raw_cov_df$id,
+    raw_cov_df$j
   )
-  
+
   sigma2 <- mapply(
-    function(i, l) sigmaX_obs_list[[i]][l],
-    i = raw_cov_df$id,
-    l = raw_cov_df$l
+    function(i,l) sigmaX_obs_list[[i]][l],
+    raw_cov_df$id,
+    raw_cov_df$l
   )
-  
+
   if (any(!is.finite(sigma1)) || any(!is.finite(sigma2))) {
-    stop("Non-finite values found in sigma1 or sigma2.")
+    if (!return_details) return(1e12)
   }
-  
-  if (any(sigma1 < 0) || any(sigma2 < 0)) {
-    stop("sigmaX values must be nonnegative.")
-  }
-  
+
   # ---------------------------------------------------------------------------
-  # 4. optimized computation of rho for pairwise rows
+  # 4. compute pairwise distances
   # ---------------------------------------------------------------------------
   d <- abs(raw_cov_df$t1 - raw_cov_df$t2)
-  
+
   rho_vec <- switch(
+
     model,
-    
+
     "power_exponential" = {
       exp(-(d^theta1) / (theta2^theta1))
     },
-    
+
     "rational_quadratic" = {
       (1 + d^2 / theta2^2)^(-theta1)
     },
-    
+
     "matern" = {
+
       u <- sqrt(2 * theta1) * d / theta2
-      
+
       rho <- numeric(length(u))
+
       zero_idx <- (u == 0)
       rho[zero_idx] <- 1
-      
+
       if (any(!zero_idx)) {
-        u_nz <- u[!zero_idx]
-        rho[!zero_idx] <- (1 / (gamma(theta1) * 2^(theta1 - 1))) *
+
+        # Numerical safeguard
+        u_nz <- pmax(u[!zero_idx], 1e-12)
+
+        const <- 1 / (gamma(theta1) * 2^(theta1 - 1))
+
+        rho_nz <- const *
           (u_nz^theta1) *
           besselK(u_nz, nu = theta1)
+
+        rho[!zero_idx] <- rho_nz
       }
-      
+
       rho
     }
   )
-  
+
+  # ---------------------------------------------------------------------------
+  # 5. robustness safeguard
+  # ---------------------------------------------------------------------------
+
   if (any(!is.finite(rho_vec))) {
-    stop("rho_theta produced non-finite values.")
+    if (!return_details) return(1e12)
+
+    return(list(
+      Qn         = 1e12,
+      n_pairs    = nrow(raw_cov_df),
+      rho        = rho_vec,
+      sigma1     = sigma1,
+      sigma2     = sigma2,
+      fitted_cov = rep(NA_real_, length(rho_vec)),
+      residuals  = rep(NA_real_, length(rho_vec)),
+      weights    = rep(NA_real_, length(rho_vec))
+    ))
   }
-  
-  # numerical safeguard
+
+  # keep correlations inside [0,1]
   rho_vec <- pmin(pmax(rho_vec, 0), 1)
-  
+
   # ---------------------------------------------------------------------------
-  # 5. modeled covariance and residuals
+  # 6. covariance model
   # ---------------------------------------------------------------------------
+
   fitted_cov <- sigma1 * rho_vec * sigma2
   residuals  <- fitted_cov - raw_cov_df$raw_cov
-  
-  # ---------------------------------------------------------------------------
-  # 6. subject weights from the paper:
-  #    weight(row from subject i) = 1 / {m_i (m_i - 1)}
-  # ---------------------------------------------------------------------------
+
   weights <- 1 / (m_vec[raw_cov_df$id] * (m_vec[raw_cov_df$id] - 1))
-  
-  if (any(!is.finite(weights)) || any(weights <= 0)) {
-    stop("Invalid subject weights encountered in Q_n(theta).")
-  }
-  
+
   Qn <- sum(weights * residuals^2)
-  
+
+  # safeguard for optimizer
   if (!is.finite(Qn)) {
-    stop("Q_n(theta) is not finite.")
+
+    if (!return_details) return(1e12)
+
+    return(list(
+      Qn         = 1e12,
+      n_pairs    = nrow(raw_cov_df),
+      rho        = rho_vec,
+      sigma1     = sigma1,
+      sigma2     = sigma2,
+      fitted_cov = fitted_cov,
+      residuals  = residuals,
+      weights    = weights
+    ))
   }
-  
+
   # ---------------------------------------------------------------------------
   # 7. output
   # ---------------------------------------------------------------------------
+
   if (!return_details) {
     return(Qn)
   }
-  
+
   return(list(
     Qn         = Qn,
     n_pairs    = nrow(raw_cov_df),

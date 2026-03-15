@@ -2,7 +2,7 @@
 % Please edit documentation in R/compute_Qn_theta.R
 \name{compute_Qn_theta}
 \alias{compute_Qn_theta}
-\title{Compute the empirical criterion Q_n(theta) (optimized version)}
+\title{Empirical criterion Q_n(theta) for covariance parameter estimation}
 \usage{
 compute_Qn_theta(
   raw_cov_df,
@@ -13,34 +13,46 @@ compute_Qn_theta(
 )
 }
 \arguments{
-\item{raw_cov_df}{Data frame returned by compute_raw_covariances().
+\item{raw_cov_df}{Data frame produced by \code{compute_raw_covariances()}.
 Must contain columns:
-- id
-- j
-- l
-- t1
-- t2
-- raw_cov}
+\itemize{
+\item id
+\item j
+\item l
+\item t1
+\item t2
+\item raw_cov
+}}
 
-\item{sigmaX_obs_list}{List of length n. sigmaX_obs_list((i))(j) is
-sigmaX_hat(T_ij).}
+\item{sigmaX_obs_list}{List where element \code{i} contains the estimated
+values of \eqn{\sigma_X(T_{ij})} evaluated at the observed time points of
+subject \code{i}.}
 
-\item{theta}{Numeric vector of length 2: c(theta1, theta2).}
+\item{theta}{Numeric vector of length 2 containing the parameters of the
+correlation model.}
 
-\item{model}{Character string. One of:
-- "power_exponential"
-- "rational_quadratic"
-- "matern"}
+\item{model}{Character string specifying the correlation model.
+Allowed values are:
 
-\item{return_details}{Logical. If TRUE, return diagnostics in addition
-to Q_n(theta).}
+\itemize{
+\item \code{"power_exponential"}
+\item \code{"rational_quadratic"}
+\item \code{"matern"}
+}}
+
+\item{return_details}{Logical. If \code{FALSE} (default), the function
+returns only the value of the criterion \eqn{Q_n(\theta)}.
+If \code{TRUE}, diagnostic quantities are also returned.}
 }
 \value{
-If return_details = FALSE:
-Numeric scalar Q_n(theta).
+If \code{return_details = FALSE}:
 
-If return_details = TRUE:
-A list with components:
+A numeric scalar equal to \eqn{Q_n(\theta)}.
+
+If \code{return_details = TRUE}:
+
+A list containing
+
 \itemize{
 \item Qn
 \item n_pairs
@@ -53,13 +65,49 @@ A list with components:
 }
 }
 \description{
-Compute the empirical criterion Q_n(theta) (optimized version)
+Computes the empirical objective function used to estimate the parameters
+of a parametric correlation model \eqn{\rho_\theta(s,t)} in the covariance
+structure of sparse functional data.
+}
+\details{
+The criterion corresponds to:
+
+\deqn{
+Q_n(\theta) =
+\sum_{i=1}^{n} \frac{1}{m_i(m_i-1)}
+\sum_{j \neq l}
+\left[
+\sigma_X(T_{ij}) \rho_\theta(T_{ij},T_{il}) \sigma_X(T_{il})
+- C_{ijl}
+\right]^2
+}
+
+where
+
+\deqn{
+C_{ijl} = (Y_{ij} - \hat{\mu}(T_{ij})) (Y_{il} - \hat{\mu}(T_{il}))
+}
+
+The function is designed to be used inside an optimizer (typically
+\code{optim()}) to estimate the parameter vector \eqn{\theta}.
+
+Supported correlation models:
+\itemize{
+\item \code{"power_exponential"}
+\item \code{"rational_quadratic"}
+\item \code{"matern"}
+}
+
+Numerical safeguards are implemented to ensure robustness during
+optimization.
 }
 \examples{
+# Example usage (assuming required objects exist)
 # Qn_val <- compute_Qn_theta(
 #   raw_cov_df      = raw_cov_df,
 #   sigmaX_obs_list = sigmaX_obs_list,
-#   theta           = c(1, 0.5),
-#   model           = "power_exponential"
+#   theta           = c(1, 0.2),
+#   model           = "matern"
 # )
+
 }
